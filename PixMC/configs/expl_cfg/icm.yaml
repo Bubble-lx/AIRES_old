@@ -1,0 +1,32 @@
+baseline: "icm"
+input_type: "obs_feat"
+expl_seq_len: 2
+k_expl: 0.05
+anneal_k: False
+
+
+mask_ratio: 0.7
+mask_all: false
+norm_loss: false
+use_cls: true
+use_actor_feat: false
+bert_lr: 1e-4
+embed_dim: 128
+decoder_embed_dim: 64
+decoder_num_heads: 2
+decoder_depth: 1
+
+# ratio
+use_my_ratio: false # 是否使用自己的方法
+attn_selet_way: 0 # 注意力权重提取方式
+sequencelevel: 0 # 是否采用序列级预测，是否返回[16384, 5]还是[16384]
+ratio_s2aanda2s: 0.5 # 第二种注意力权重提取方式下的比例
+attn_ratio_weight: 1.0
+
+expl_seq_len_ratio: 1  # >=2 to enable
+# anneal_k_ratio: False # 是否动态调整权重比例，随着运行步数的增加逐步变小
+norm_loss_ratio: false
+use_cls_ratio: true
+bert_lr_ratio: 1e-4
+decoder_num_heads_ratio: 2
+decoder_depth_ratio: 1

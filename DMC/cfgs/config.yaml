@@ -1,0 +1,85 @@
+defaults:
+  - _self_
+  - task@_global_: acrobot_swingup
+  - agent@_global_: drqv2
+  - expl_cfg@_global_: expl
+
+# task settings
+frame_stack: 3
+# frame_stack: 1
+action_repeat: 2
+discount: 0.99
+# train settings
+num_seed_frames: 4000
+# eval
+eval_every_frames: 10000
+save_video_every_evals: 5
+num_eval_episodes: 10
+# snapshot
+save_snapshot: false
+# replay buffer
+replay_buffer_size: 1000000
+replay_buffer_num_workers: 4
+nstep: 1 # 不能动，一旦动了_sample的seq就需要启用注释部分
+batch_size: 512
+# misc
+seed: 1
+device: cuda
+load_ckpt_path: ''
+save_best_ckpt: true
+save_video: false
+save_train_video: false
+use_tb: true
+# experiment
+experiment: exp
+# agent
+lr: 1e-4
+feature_dim: 50
+
+wandb_mode: "disabled"  # "online" | "offline" | "disabled"
+
+# sequence exploration
+expl_cfg:
+  seq_type: 'pad2'  # 'full' | 'pad' | 'full2' | 'pad2'
+  seq_expl_len: 0  # >0 to enable
+  k_expl: 0.05
+  mask_ratio: 0.7
+  norm_loss: false
+  use_cls: true
+  use_actor_feat: false
+  use_ema_encoder: false
+  use_self_encoder: true
+  ema_tau: 1.0  # always use latest encoder
+  bert_lr: 1e-4
+  embed_dim: 128
+  decoder_embed_dim: 64
+  decoder_num_heads: 2
+  decoder_depth: 1
+  n_masks: 1
+  baseline: 'none'  # 'none' | 'icm' | 'rnd' | 'ngu'
+
+  use_my_ratio: false # 是否使用自己的方法
+  sequencelevel: 0
+  attn_selet_way: 0
+  ratio_s2aanda2s: 0.5
+  attn_ratio_weight: 1.0
+
+  expl_seq_len_ratio: 1  # >=2 to enable
+  # anneal_k_ratio: False # 是否动态调整权重比例，随着运行步数的增加逐步变小
+  norm_loss_ratio: false
+  use_cls_ratio: true
+  bert_lr_ratio: 1e-4
+  decoder_num_heads_ratio: 2
+  decoder_depth_ratio: 1
+
+encoder_cfg:
+  encoder_type: 'drq'  # 'drq' | 'vit' | 'mae'
+  aug_type: 'drq'  # 'drq' | 'mae'
+  patch_size: 4
+  base_lr: 0.001
+  weight_decay: 0.05
+  batch_size: ${batch_size}
+
+hydra:
+  run:
+    dir: /home/liuxinn/Transformer/code/mimex/mimex-dmc/exp-${expl_cfg.baseline}/${now:%Y-%m-%d-%H%M%S}_${hydra.job.override_dirname}
